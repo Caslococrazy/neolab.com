@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soluções — Neolab</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d0d0f; color: #e8e8e8; }
+
+    /* NAV */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 0.5px solid #222; }
+    .logo { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 0.5px; text-decoration: none; }
+    .logo span { color: #6c63ff; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .btn-nav { background: #6c63ff; color: #fff; font-size: 13px; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; }
+
+    /* HERO */
+    .hero { padding: 72px 40px 56px; text-align: center; border-bottom: 0.5px solid #1a1a1a; }
+    .badge { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff44; color: #a59fff; font-size: 12px; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 38px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 14px; }
+    .hero h1 span { color: #6c63ff; }
+    .hero p { font-size: 15px; color: #666; max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+    /* SOLUTION CARDS */
+    .solutions { padding: 64px 40px; display: flex; flex-direction: column; gap: 2px; }
+    .sol-block { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; padding: 52px 0; border-bottom: 0.5px solid #1a1a1a; }
+    .sol-block:last-child { border-bottom: none; }
+    .sol-block.reverse { direction: rtl; }
+    .sol-block.reverse > * { direction: ltr; }
+    .sol-text .sol-tag { display: inline-block; font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 14px; }
+    .sol-text h2 { font-size: 26px; font-weight: 500; color: #fff; margin-bottom: 12px; line-height: 1.3; }
+    .sol-text p { font-size: 14px; color: #666; line-height: 1.8; margin-bottom: 20px; }
+    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .feat-list li { font-size: 13px; color: #888; padding-left: 18px; position: relative; }
+    .feat-list li::before { content: '—'; position: absolute; left: 0; color: #6c63ff88; }
+    .btn-sol { display: inline-block; margin-top: 24px; background: #6c63ff; color: #fff; font-size: 13px; padding: 10px 22px; border-radius: 9px; border: none; cursor: pointer; text-decoration: none; }
+
+    /* VISUAL PANELS */
+    .sol-visual { background: #111116; border: 0.5px solid #1e1e26; border-radius: 14px; padding: 28px; min-height: 220px; display: flex; flex-direction: column; gap: 14px; }
+    .vis-header { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+    .vis-dot { width: 8px; height: 8px; border-radius: 50%; }
+    .vis-title { font-size: 11px; color: #444; }
+    .vis-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: #0f0f13; border: 0.5px solid #1e1e1e; border-radius: 8px; }
+    .vis-row-label { font-size: 12px; color: #666; }
+    .vis-row-val { font-size: 12px; font-weight: 500; }
+    .vis-row-val.green { color: #7dcf7d; }
+    .vis-row-val.purple { color: #9a94ff; }
+    .vis-row-val.red { color: #ff7a7a; }
+    .vis-bar { height: 4px; background: #1e1e1e; border-radius: 4px; margin-top: 4px; }
+    .vis-bar-fill { height: 100%; border-radius: 4px; background: linear-gradient(90deg, #6c63ff, #a59fff); }
+    .vis-chip { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff44; color: #9a94ff; font-size: 10px; padding: 3px 10px; border-radius: 20px; }
+    .vis-chat { display: flex; flex-direction: column; gap: 8px; }
+    .vis-bubble { font-size: 12px; padding: 8px 12px; border-radius: 8px; max-width: 85%; }
+    .vis-bubble.bot { background: #1a1a2e; color: #c8c8e8; border: 0.5px solid #2a2a44; align-self: flex-start; }
+    .vis-bubble.user { background: #1a2a1a; color: #c8e8c8; border: 0.5px solid #2a442a; align-self: flex-end; }
+
+    /* BENEFITS STRIP */
+    .benefits { background: #111116; border-top: 0.5px solid #1e1e1e; border-bottom: 0.5px solid #1e1e1e; padding: 48px 40px; }
+    .benefits-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: #1e1e1e; border: 0.5px solid #1e1e1e; border-radius: 12px; overflow: hidden; }
+    .benefit { background: #111116; padding: 28px 22px; }
+    .benefit-icon { width: 32px; height: 32px; border-radius: 8px; background: #1a1a2e; border: 0.5px solid #6c63ff33; display: flex; align-items: center; justify-content: center; margin-bottom: 14px; }
+    .benefit h4 { font-size: 13px; font-weight: 500; color: #ddd; margin-bottom: 6px; }
+    .benefit p { font-size: 12px; color: #555; line-height: 1.6; }
+
+    /* CTA */
+    .cta { padding: 72px 40px; text-align: center; }
+    .cta h2 { font-size: 28px; font-weight: 500; color: #fff; margin-bottom: 12px; }
+    .cta p { font-size: 14px; color: #666; margin-bottom: 28px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; }
+    .btn-primary { background: #6c63ff; color: #fff; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; }
+    .btn-secondary { background: transparent; color: #aaa; padding: 12px 28px; border-radius: 10px; border: 0.5px solid #333; cursor: pointer; font-size: 14px; }
+
+    /* FOOTER */
+    .footer { padding: 24px 40px; border-top: 0.5px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+    .footer p { font-size: 12px; color: #444; }
+    .footer-logo { font-size: 15px; font-weight: 500; color: #444; }
+    .footer-logo span { color: #6c63ff66; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="logo" href="neolab_landing_page.html">NEO<span>LAB</span></a>
+    <div class="nav-links">
+      <a href="solucoes.html" class="active">Soluções</a>
+      <a href="como-funciona.html">Como funciona</a>
+      <a href="precos.html">Preços</a>
+    </div>
+    <button class="btn-nav">Começar grátis</button>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">SOLUÇÕES</div>
+    <h1>Ferramentas de IA para<br><span>quem cuida dos números</span></h1>
+    <p>Três soluções prontas para PMEs que querem mais controle, menos planilha manual e zero complexidade técnica.</p>
+  </section>
+
+  <section class="solutions">
+
+    <!-- SOLUÇÃO 1 -->
+    <div class="sol-block">
+      <div class="sol-text">
+        <div class="sol-tag">SOLUÇÃO 01</div>
+        <h2>Planilha Financeira IA</h2>
+        <p>Conecte seu Google Sheets ou Excel e transforme dados brutos em análises prontas. A IA lê seu histórico, identifica tendências e responde às suas perguntas em linguagem natural — sem fórmulas complexas.</p>
+        <ul class="feat-list">
+          <li>Análise automática de receitas e despesas</li>
+          <li>Projeções de fluxo de caixa para os próximos meses</li>
+          <li>Comparação de períodos com destaque de variações</li>
+          <li>Relatórios exportáveis em PDF ou Google Sheets</li>
+          <li>Funciona com qualquer estrutura de planilha</li>
+        </ul>
+        <button class="btn-sol">Testar gratuitamente</button>
+      </div>
+      <div class="sol-visual">
+        <div class="vis-header">
+          <div class="vis-dot" style="background:#ff5f57"></div>
+          <div class="vis-dot" style="background:#febc2e"></div>
+          <div class="vis-dot" style="background:#28c840"></div>
+          <span class="vis-title">planilha financeira — abril 2025</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label">Receita total</span>
+          <span class="vis-row-val purple">R$ 48.200</span>
+        </div>
+        <div style="padding: 0 2px;">
+          <div class="vis-bar"><div class="vis-bar-fill" style="width:78%"></div></div>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label">Despesas operacionais</span>
+          <span class="vis-row-val red">R$ 18.740</span>
+        </div>
+        <div style="padding: 0 2px;">
+          <div class="vis-bar"><div class="vis-bar-fill" style="width:38%; background: linear-gradient(90deg,#ff7a7a,#ffaaaa)"></div></div>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label">Lucro líquido</span>
+          <span class="vis-row-val green">R$ 29.460 <span style="font-size:10px;color:#555">+22% vs mar</span></span>
+        </div>
+        <div style="padding: 0 2px;">
+          <div class="vis-bar"><div class="vis-bar-fill" style="width:61%; background: linear-gradient(90deg,#7dcf7d,#aaeaaa)"></div></div>
+        </div>
+        <div style="margin-top:4px; display:flex; gap:6px; flex-wrap:wrap;">
+          <span class="vis-chip">✦ melhor mês do tri</span>
+          <span class="vis-chip">margem 61%</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOLUÇÃO 2 -->
+    <div class="sol-block reverse">
+      <div class="sol-text">
+        <div class="sol-tag">SOLUÇÃO 02</div>
+        <h2>Bot de Controle Financeiro</h2>
+        <p>Converse com seus dados como se estivesse falando com um analista. O NeoBot entende o contexto do seu negócio e responde sobre fluxo de caixa, metas, pendências e oportunidades — tudo dentro da sua planilha.</p>
+        <ul class="feat-list">
+          <li>Interface de chat integrada à planilha</li>
+          <li>Respostas sobre fluxo de caixa em tempo real</li>
+          <li>Alertas proativos quando metas estão em risco</li>
+          <li>Sugestões de corte de custo baseadas no histórico</li>
+          <li>Memória de contexto — o bot lembra do mês passado</li>
+        </ul>
+        <button class="btn-sol">Ver demonstração</button>
+      </div>
+      <div class="sol-visual">
+        <div class="vis-header">
+          <div class="vis-dot" style="background:#ff5f57"></div>
+          <div class="vis-dot" style="background:#febc2e"></div>
+          <div class="vis-dot" style="background:#28c840"></div>
+          <span class="vis-title">neobot — chat financeiro</span>
+        </div>
+        <div class="vis-chat">
+          <div class="vis-bubble bot">Olá! Analisei abril. Sua margem está em 61% — acima da meta de 55%. 🎯</div>
+          <div class="vis-bubble user">Onde posso cortar custos esse mês?</div>
+          <div class="vis-bubble bot">Identifiquei R$ 2.400 em assinaturas não utilizadas e R$ 1.100 em frete acima da média. Quer que eu detalhe?</div>
+          <div class="vis-bubble user">Sim, mostra o breakdown</div>
+          <div class="vis-bubble bot">Claro! Gerando relatório de otimização de custos...</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOLUÇÃO 3 -->
+    <div class="sol-block">
+      <div class="sol-text">
+        <div class="sol-tag">SOLUÇÃO 03</div>
+        <h2>Gestão de Estoque</h2>
+        <p>Conecte sua planilha de estoque e deixe a IA monitorar o giro dos produtos, emitir alertas de reposição e prever a demanda com base no histórico de vendas. Nunca mais fique sem produto ou com excesso parado.</p>
+        <ul class="feat-list">
+          <li>Alertas automáticos de estoque mínimo</li>
+          <li>Previsão de demanda para os próximos 30/60/90 dias</li>
+          <li>Ranking de produtos por giro e margem</li>
+          <li>Relatório de produtos parados com sugestões de ação</li>
+          <li>Integração com planilha de compras e fornecedores</li>
+        </ul>
+        <button class="btn-sol">Testar gratuitamente</button>
+      </div>
+      <div class="sol-visual">
+        <div class="vis-header">
+          <div class="vis-dot" style="background:#ff5f57"></div>
+          <div class="vis-dot" style="background:#febc2e"></div>
+          <div class="vis-dot" style="background:#28c840"></div>
+          <span class="vis-title">estoque — status em tempo real</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label">Produto A — Plano Pro</span>
+          <span class="vis-row-val green">142 un ✓</span>
+        </div>
+        <div class="vis-row" style="border: 0.5px solid #6c63ff44;">
+          <span class="vis-row-label">Produto B — Starter Kit</span>
+          <span class="vis-row-val" style="color:#febc2e;">⚠ 12 un</span>
+        </div>
+        <div class="vis-row">
+          <span class="vis-row-label">Produto C — Add-on API</span>
+          <span class="vis-row-val red">✕ 0 un</span>
+        </div>
+        <div style="margin-top:8px; padding: 10px 14px; background: #1a1a2e; border: 0.5px solid #6c63ff33; border-radius: 8px;">
+          <div style="font-size:11px; color:#a59fff; margin-bottom:4px;">✦ Alerta automático</div>
+          <div style="font-size:12px; color:#888;">Repor Starter Kit: previsão de ruptura em 4 dias com base no giro atual.</div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits">
+    <div class="benefits-grid">
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a94ff" stroke-width="1.5"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+        </div>
+        <h4>Setup em minutos</h4>
+        <p>Cole o link da sua planilha e o bot está pronto. Sem instalação, sem configuração técnica.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a94ff" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <h4>Dados seguros</h4>
+        <p>Seus dados ficam na sua planilha. A Neolab nunca armazena suas informações financeiras.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a94ff" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        </div>
+        <h4>Alertas por e-mail</h4>
+        <p>Receba notificações automáticas quando algo importante acontecer nos seus dados.</p>
+      </div>
+      <div class="benefit">
+        <div class="benefit-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a94ff" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <h4>Atualização em tempo real</h4>
+        <p>A IA re-analisa seus dados sempre que a planilha é editada. Insights sempre atualizados.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Pronto para começar?</h2>
+    <p>Teste gratuitamente por 14 dias. Sem cartão de crédito.</p>
+    <div class="cta-btns">
+      <button class="btn-primary">Criar conta grátis</button>
+      <button class="btn-secondary">Falar com time</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">NEO<span>LAB</span></div>
+    <p>© 2025 Neolab. IA que transforma.</p>
+    <p>contato@neolab.ai</p>
+  </footer>
+
+</body>
+</html>

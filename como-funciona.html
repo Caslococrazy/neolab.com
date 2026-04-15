@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Como Funciona — Neolab</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d0d0f; color: #e8e8e8; }
+
+    /* NAV */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 0.5px solid #222; }
+    .logo { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 0.5px; text-decoration: none; }
+    .logo span { color: #6c63ff; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .btn-nav { background: #6c63ff; color: #fff; font-size: 13px; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; }
+
+    /* HERO */
+    .hero { padding: 72px 40px 56px; text-align: center; border-bottom: 0.5px solid #1a1a1a; }
+    .badge { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff44; color: #a59fff; font-size: 12px; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 38px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 14px; }
+    .hero h1 span { color: #6c63ff; }
+    .hero p { font-size: 15px; color: #666; max-width: 480px; margin: 0 auto; line-height: 1.7; }
+
+    /* STEPS SECTION */
+    .steps-section { padding: 72px 40px; }
+    .steps-intro { text-align: center; margin-bottom: 64px; }
+    .steps-intro .label { font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 10px; }
+    .steps-intro h2 { font-size: 28px; font-weight: 500; color: #fff; }
+
+    .step-big { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; margin-bottom: 80px; }
+    .step-big:last-child { margin-bottom: 0; }
+    .step-big.reverse { direction: rtl; }
+    .step-big.reverse > * { direction: ltr; }
+
+    .step-text .step-num-big { font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 16px; }
+    .step-text h3 { font-size: 22px; font-weight: 500; color: #fff; margin-bottom: 12px; }
+    .step-text p { font-size: 14px; color: #666; line-height: 1.8; margin-bottom: 16px; }
+    .step-detail { font-size: 13px; color: #555; padding: 14px 16px; background: #111116; border: 0.5px solid #1e1e26; border-radius: 8px; line-height: 1.6; }
+    .step-detail strong { color: #9a94ff; font-weight: 500; }
+
+    /* VISUAL BOXES */
+    .step-visual { background: #111116; border: 0.5px solid #1e1e26; border-radius: 14px; overflow: hidden; }
+    .vis-top { display: flex; align-items: center; gap: 7px; padding: 11px 16px; border-bottom: 0.5px solid #1e1e1e; background: #0f0f13; }
+    .vdot { width: 8px; height: 8px; border-radius: 50%; }
+    .vis-label { font-size: 11px; color: #444; margin-left: 4px; }
+    .vis-body { padding: 22px 18px; display: flex; flex-direction: column; gap: 10px; }
+
+    /* Connect visual */
+    .connect-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #0f0f13; border: 0.5px solid #1e1e1e; border-radius: 8px; }
+    .connect-icon { width: 30px; height: 30px; border-radius: 7px; display: flex; align-items: center; justify-content: center; }
+    .connect-name { font-size: 13px; color: #bbb; }
+    .connect-status { margin-left: auto; font-size: 11px; }
+    .status-ok { color: #7dcf7d; }
+    .status-wait { color: #febc2e; }
+
+    /* Learn visual */
+    .learn-item { padding: 10px 14px; border-radius: 8px; border: 0.5px solid #1e1e26; background: #0f0f13; }
+    .learn-title { font-size: 11px; color: #6c63ff; margin-bottom: 5px; }
+    .learn-bar-wrap { display: flex; align-items: center; gap: 10px; }
+    .learn-bar { flex: 1; height: 3px; background: #1e1e1e; border-radius: 3px; }
+    .learn-bar-fill { height: 100%; border-radius: 3px; background: linear-gradient(90deg, #6c63ff, #a59fff); }
+    .learn-pct { font-size: 10px; color: #555; }
+    .learn-tag { margin-top: 6px; display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff33; color: #7a74cc; font-size: 10px; padding: 2px 8px; border-radius: 20px; }
+
+    /* Chat visual */
+    .chat-vis { display: flex; flex-direction: column; gap: 8px; }
+    .cv-bubble { font-size: 12px; padding: 9px 12px; border-radius: 8px; max-width: 87%; line-height: 1.5; }
+    .cv-bubble.bot { background: #1a1a2e; color: #c8c8e8; border: 0.5px solid #2a2a44; align-self: flex-start; }
+    .cv-bubble.user { background: #1a2a1a; color: #c8e8c8; border: 0.5px solid #2a442a; align-self: flex-end; }
+    .cv-bubble.alert { background: #1e1a2e; border: 0.5px solid #6c63ff44; color: #a59fff; align-self: flex-start; }
+
+    /* TIMELINE / CONNECTOR */
+    .timeline { padding: 0 40px 64px; }
+    .tl-title { text-align: center; font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 40px; }
+    .tl-grid { display: flex; gap: 0; }
+    .tl-step { flex: 1; text-align: center; position: relative; }
+    .tl-step:not(:last-child)::after { content: ''; position: absolute; top: 20px; left: 60%; width: 80%; height: 0.5px; background: linear-gradient(90deg, #6c63ff44, #1a1a2e); }
+    .tl-circle { width: 40px; height: 40px; border-radius: 10px; background: #1a1a2e; border: 0.5px solid #6c63ff44; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; font-size: 13px; color: #9a94ff; }
+    .tl-name { font-size: 12px; color: #888; margin-bottom: 4px; }
+    .tl-time { font-size: 11px; color: #444; }
+
+    /* FAQ */
+    .faq { padding: 0 40px 64px; max-width: 680px; margin: 0 auto; }
+    .faq-title { text-align: center; font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 8px; }
+    .faq-h2 { text-align: center; font-size: 24px; font-weight: 500; color: #fff; margin-bottom: 36px; }
+    .faq-item { border-bottom: 0.5px solid #1a1a1a; padding: 18px 0; cursor: pointer; }
+    .faq-item:last-child { border-bottom: none; }
+    .faq-q { font-size: 14px; color: #ddd; display: flex; justify-content: space-between; align-items: center; }
+    .faq-q span { font-size: 18px; color: #6c63ff; }
+    .faq-a { font-size: 13px; color: #666; line-height: 1.7; margin-top: 10px; }
+
+    /* CTA */
+    .cta { padding: 72px 40px; text-align: center; border-top: 0.5px solid #1a1a1a; }
+    .cta h2 { font-size: 28px; font-weight: 500; color: #fff; margin-bottom: 12px; }
+    .cta p { font-size: 14px; color: #666; margin-bottom: 28px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; }
+    .btn-primary { background: #6c63ff; color: #fff; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; }
+    .btn-secondary { background: transparent; color: #aaa; padding: 12px 28px; border-radius: 10px; border: 0.5px solid #333; cursor: pointer; font-size: 14px; }
+
+    /* FOOTER */
+    .footer { padding: 24px 40px; border-top: 0.5px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+    .footer p { font-size: 12px; color: #444; }
+    .footer-logo { font-size: 15px; font-weight: 500; color: #444; }
+    .footer-logo span { color: #6c63ff66; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="logo" href="neolab_landing_page.html">NEO<span>LAB</span></a>
+    <div class="nav-links">
+      <a href="solucoes.html">Soluções</a>
+      <a href="como-funciona.html" class="active">Como funciona</a>
+      <a href="precos.html">Preços</a>
+    </div>
+    <button class="btn-nav">Começar grátis</button>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">COMO FUNCIONA</div>
+    <h1>De planilha a assistente<br><span>em menos de 5 minutos</span></h1>
+    <p>Sem código, sem configuração técnica. Você conecta, a IA aprende, e você já começa a conversar com seus dados.</p>
+  </section>
+
+  <!-- STEPS -->
+  <section class="steps-section">
+
+    <!-- STEP 1 -->
+    <div class="step-big">
+      <div class="step-text">
+        <div class="step-num-big">PASSO 01</div>
+        <h3>Conecte sua planilha</h3>
+        <p>Cole o link do Google Sheets ou faça upload do seu arquivo Excel. A Neolab aceita qualquer estrutura — não precisa reorganizar nada.</p>
+        <div class="step-detail">
+          Funciona com <strong>Google Sheets</strong>, <strong>Excel (.xlsx)</strong> e arquivos <strong>.csv</strong>. Basta compartilhar o link com acesso de leitura — seus dados nunca saem da sua conta.
+        </div>
+      </div>
+      <div class="step-visual">
+        <div class="vis-top">
+          <div class="vdot" style="background:#ff5f57"></div>
+          <div class="vdot" style="background:#febc2e"></div>
+          <div class="vdot" style="background:#28c840"></div>
+          <span class="vis-label">conectar planilha</span>
+        </div>
+        <div class="vis-body">
+          <div class="connect-row">
+            <div class="connect-icon" style="background:#1a2e1e; border: 0.5px solid #3d6e3d44;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7dcf7d" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+            </div>
+            <span class="connect-name">Google Sheets</span>
+            <span class="connect-status status-ok">✓ conectado</span>
+          </div>
+          <div class="connect-row">
+            <div class="connect-icon" style="background:#1a1e2e; border: 0.5px solid #3d4e6e44;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#7d9dcf" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <span class="connect-name">Excel (.xlsx)</span>
+            <span class="connect-status status-wait">aguardando upload</span>
+          </div>
+          <div style="padding: 12px 14px; background: #1a1a2e; border: 0.5px solid #6c63ff33; border-radius: 8px; margin-top: 4px;">
+            <div style="font-size: 11px; color: #9a94ff; margin-bottom: 6px;">Cole o link da planilha</div>
+            <div style="font-size: 12px; color: #444; background: #0d0d0f; border: 0.5px solid #2a2a2a; border-radius: 6px; padding: 8px 10px;">https://docs.google.com/spreadsheets/...</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2 -->
+    <div class="step-big reverse">
+      <div class="step-text">
+        <div class="step-num-big">PASSO 02</div>
+        <h3>O bot aprende seus dados</h3>
+        <p>A IA lê a estrutura da sua planilha, identifica colunas, categorias e padrões. Em segundos ela entende o que é receita, despesa, produto, data — sem você explicar nada.</p>
+        <div class="step-detail">
+          Quanto mais histórico você tiver, <strong>melhores as análises</strong>. O bot identifica sazonalidade, tendências e anomalias automaticamente.
+        </div>
+      </div>
+      <div class="step-visual">
+        <div class="vis-top">
+          <div class="vdot" style="background:#ff5f57"></div>
+          <div class="vdot" style="background:#febc2e"></div>
+          <div class="vdot" style="background:#28c840"></div>
+          <span class="vis-label">analisando planilha...</span>
+        </div>
+        <div class="vis-body">
+          <div class="learn-item">
+            <div class="learn-title">Identificando estrutura</div>
+            <div class="learn-bar-wrap">
+              <div class="learn-bar"><div class="learn-bar-fill" style="width:100%"></div></div>
+              <span class="learn-pct">100%</span>
+            </div>
+            <span class="learn-tag">✓ 6 colunas mapeadas</span>
+          </div>
+          <div class="learn-item">
+            <div class="learn-title">Reconhecendo categorias</div>
+            <div class="learn-bar-wrap">
+              <div class="learn-bar"><div class="learn-bar-fill" style="width:100%"></div></div>
+              <span class="learn-pct">100%</span>
+            </div>
+            <span class="learn-tag">✓ receitas, despesas, estoque</span>
+          </div>
+          <div class="learn-item">
+            <div class="learn-title">Aprendendo padrões temporais</div>
+            <div class="learn-bar-wrap">
+              <div class="learn-bar"><div class="learn-bar-fill" style="width:100%"></div></div>
+              <span class="learn-pct">100%</span>
+            </div>
+            <span class="learn-tag">✓ 14 meses de histórico</span>
+          </div>
+          <div style="padding: 10px 14px; background: #1a1a2e; border: 0.5px solid #6c63ff44; border-radius: 8px; margin-top: 4px;">
+            <div style="font-size: 12px; color: #9a94ff;">✦ Bot pronto para conversar!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div class="step-big">
+      <div class="step-text">
+        <div class="step-num-big">PASSO 03</div>
+        <h3>Converse e automatize</h3>
+        <p>Faça perguntas em português, receba análises, configure alertas automáticos e gere relatórios com um clique. O NeoBot funciona como um analista disponível 24h.</p>
+        <div class="step-detail">
+          Você pode pedir <strong>relatórios semanais automáticos</strong>, configurar <strong>alertas de meta</strong> e até criar <strong>resumos por e-mail</strong> sem precisar abrir a planilha.
+        </div>
+      </div>
+      <div class="step-visual">
+        <div class="vis-top">
+          <div class="vdot" style="background:#ff5f57"></div>
+          <div class="vdot" style="background:#febc2e"></div>
+          <div class="vdot" style="background:#28c840"></div>
+          <span class="vis-label">neobot — chat</span>
+        </div>
+        <div class="vis-body">
+          <div class="chat-vis">
+            <div class="cv-bubble bot">Sua planilha está conectada. O que você quer analisar?</div>
+            <div class="cv-bubble user">Como foi o faturamento de março?</div>
+            <div class="cv-bubble bot">Março fechou em R$ 41.300, crescimento de 18% vs fevereiro. Melhor mês do trimestre. Quer o breakdown por produto?</div>
+            <div class="cv-bubble alert">⚠ Alerta: Estoque do Produto B abaixo do mínimo definido.</div>
+            <div class="cv-bubble user">Me manda o relatório completo por e-mail</div>
+            <div class="cv-bubble bot">Relatório de março enviado para contato@empresa.com ✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- TIMELINE -->
+  <section class="timeline">
+    <div class="tl-title">DO ZERO AO BOT FUNCIONANDO</div>
+    <div class="tl-grid">
+      <div class="tl-step">
+        <div class="tl-circle">01</div>
+        <div class="tl-name">Criar conta</div>
+        <div class="tl-time">30 seg</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-circle">02</div>
+        <div class="tl-name">Conectar planilha</div>
+        <div class="tl-time">1 min</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-circle">03</div>
+        <div class="tl-name">IA processa</div>
+        <div class="tl-time">2 min</div>
+      </div>
+      <div class="tl-step">
+        <div class="tl-circle">04</div>
+        <div class="tl-name">Primeira análise</div>
+        <div class="tl-time">imediato</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq">
+    <div class="faq-title">DÚVIDAS FREQUENTES</div>
+    <h2 class="faq-h2">Perguntas comuns</h2>
+    <div class="faq-item">
+      <div class="faq-q">Preciso saber programar para usar a Neolab? <span>+</span></div>
+      <div class="faq-a">Não. A Neolab foi feita para quem trabalha com planilhas, não para desenvolvedores. Se você sabe usar Google Sheets, já sabe usar a Neolab.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Minha planilha precisa ter um formato específico? <span>+</span></div>
+      <div class="faq-a">Não. A IA se adapta à estrutura que você já tem. Colunas com nomes em português, abreviações, formatos diferentes — tudo funciona. Quanto mais organizada, melhores os resultados, mas não é obrigatório.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Meus dados ficam seguros? <span>+</span></div>
+      <div class="faq-a">Sim. A Neolab acessa sua planilha apenas para leitura e análise. Não armazenamos seus dados financeiros em nossos servidores. Toda comunicação é criptografada com TLS 1.3.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">O bot funciona com qualquer setor? <span>+</span></div>
+      <div class="faq-a">Sim, mas é especialmente otimizado para PMEs com controle financeiro, gestão de estoque e análise de vendas. Funciona muito bem para comércio, serviços e e-commerce.</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">Posso cancelar quando quiser? <span>+</span></div>
+      <div class="faq-a">Sim, sem burocracia. Você pode cancelar a qualquer momento pelo próprio painel, sem precisar falar com ninguém.</div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Veja você mesmo</h2>
+    <p>Conecte sua planilha agora e faça a primeira pergunta. É grátis.</p>
+    <div class="cta-btns">
+      <button class="btn-primary">Começar grátis</button>
+      <button class="btn-secondary">Ver os planos</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">NEO<span>LAB</span></div>
+    <p>© 2025 Neolab. IA que transforma.</p>
+    <p>contato@neolab.ai</p>
+  </footer>
+
+</body>
+</html>

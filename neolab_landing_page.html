@@ -1,0 +1,282 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: transparent; }
+  .lp { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #e8e8e8; background: #0d0d0f; border-radius: 16px; overflow: hidden; }
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 0.5px solid #222; }
+  .logo { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 0.5px; }
+  .logo span { color: #6c63ff; }
+  .nav-links { display: flex; gap: 24px; }
+  .nav-links a { font-size: 13px; color: #888; text-decoration: none; }
+  .nav-links a:hover { color: #fff; }
+  .btn-nav { background: #6c63ff; color: #fff; font-size: 13px; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; }
+  .hero { padding: 80px 40px 60px; text-align: center; }
+  .badge { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff44; color: #a59fff; font-size: 12px; padding: 5px 14px; border-radius: 20px; margin-bottom: 24px; }
+  .hero h1 { font-size: 42px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 16px; }
+  .hero h1 span { color: #6c63ff; }
+  .hero p { font-size: 16px; color: #888; max-width: 500px; margin: 0 auto 36px; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; }
+  .btn-primary { background: #6c63ff; color: #fff; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; }
+  .btn-secondary { background: transparent; color: #aaa; padding: 12px 28px; border-radius: 10px; border: 0.5px solid #333; cursor: pointer; font-size: 14px; }
+  .demo-area { margin: 48px 40px 0; background: #111116; border: 0.5px solid #222; border-radius: 14px; overflow: hidden; }
+  .demo-header { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-bottom: 0.5px solid #1e1e1e; background: #0f0f13; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .demo-title { font-size: 12px; color: #555; margin-left: 6px; }
+  .chat-area { padding: 20px 18px; display: flex; flex-direction: column; gap: 12px; min-height: 180px; }
+  .msg { display: flex; align-items: flex-start; gap: 10px; }
+  .msg.bot { flex-direction: row; }
+  .msg.user { flex-direction: row-reverse; }
+  .avatar { width: 28px; height: 28px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; flex-shrink: 0; }
+  .avatar.bot-av { background: #1e1a3a; color: #9a94ff; border: 0.5px solid #6c63ff44; }
+  .avatar.user-av { background: #1e2a1e; color: #7dcf7d; border: 0.5px solid #3d6e3d44; }
+  .bubble { padding: 10px 14px; border-radius: 10px; font-size: 13px; line-height: 1.5; max-width: 78%; }
+  .bubble.bot { background: #1a1a2e; color: #c8c8e8; border: 0.5px solid #2a2a44; }
+  .bubble.user { background: #1a2a1a; color: #c8e8c8; border: 0.5px solid #2a442a; }
+  .typing { display: flex; align-items: center; gap: 4px; padding: 10px 14px; background: #1a1a2e; border: 0.5px solid #2a2a44; border-radius: 10px; }
+  .typing span { width: 5px; height: 5px; border-radius: 50%; background: #6c63ff; animation: blink 1.2s infinite; }
+  .typing span:nth-child(2) { animation-delay: 0.2s; }
+  .typing span:nth-child(3) { animation-delay: 0.4s; }
+  @keyframes blink { 0%,80%,100%{opacity:0.2} 40%{opacity:1} }
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: #1e1e1e; border-top: 0.5px solid #1e1e1e; }
+  .metric { background: #0f0f13; padding: 14px 20px; text-align: center; }
+  .metric .val { font-size: 20px; font-weight: 500; color: #fff; }
+  .metric .lbl { font-size: 11px; color: #555; margin-top: 2px; }
+  .section { padding: 60px 40px; }
+  .section-label { font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 12px; }
+  .section h2 { font-size: 28px; font-weight: 500; color: #fff; margin-bottom: 10px; }
+  .section p { color: #666; font-size: 14px; line-height: 1.7; max-width: 480px; margin-bottom: 36px; }
+  .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .card { background: #111116; border: 0.5px solid #1e1e26; border-radius: 12px; padding: 20px; }
+  .card-icon { width: 36px; height: 36px; border-radius: 8px; margin-bottom: 14px; display: flex; align-items: center; justify-content: center; }
+  .card h3 { font-size: 14px; font-weight: 500; color: #ddd; margin-bottom: 6px; }
+  .card p { font-size: 12px; color: #555; line-height: 1.6; margin: 0; }
+  .card.featured { border-color: #6c63ff44; background: #12101e; }
+  .how { padding: 0 40px 60px; }
+  .steps { display: flex; flex-direction: column; gap: 0; }
+  .step { display: flex; gap: 20px; padding: 20px 0; border-bottom: 0.5px solid #1a1a1a; }
+  .step:last-child { border-bottom: none; }
+  .step-num { width: 32px; height: 32px; border-radius: 8px; background: #1a1a2e; border: 0.5px solid #6c63ff44; display: flex; align-items: center; justify-content: center; font-size: 13px; color: #9a94ff; flex-shrink: 0; margin-top: 2px; }
+  .step-content h4 { font-size: 14px; font-weight: 500; color: #ddd; margin-bottom: 4px; }
+  .step-content p { font-size: 12px; color: #555; line-height: 1.6; }
+  .pricing { padding: 0 40px 60px; }
+  .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 36px; }
+  .price-card { background: #111116; border: 0.5px solid #1e1e26; border-radius: 12px; padding: 24px; }
+  .price-card.pro { border-color: #6c63ff; background: #0f0e1c; }
+  .price-tag { font-size: 28px; font-weight: 500; color: #fff; }
+  .price-tag sub { font-size: 14px; color: #555; font-weight: 400; }
+  .price-name { font-size: 12px; color: #555; margin-bottom: 16px; margin-top: 4px; }
+  .price-feat { font-size: 12px; color: #666; margin-bottom: 8px; }
+  .price-feat::before { content: '— '; color: #6c63ff88; }
+  .btn-price { width: 100%; padding: 10px; border-radius: 8px; border: 0.5px solid #333; background: transparent; color: #888; font-size: 13px; cursor: pointer; margin-top: 16px; }
+  .btn-price.active { background: #6c63ff; border-color: #6c63ff; color: #fff; }
+  .footer { padding: 24px 40px; border-top: 0.5px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+  .footer p { font-size: 12px; color: #444; }
+  .footer-logo { font-size: 15px; font-weight: 500; color: #444; }
+  .footer-logo span { color: #6c63ff66; }
+
+  .tag { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff33; color: #7a74cc; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-right: 6px; }
+</style>
+
+<div class="lp">
+  <nav class="nav">
+    <div class="logo">NEO<span>LAB</span></div>
+    <div class="nav-links">
+      <a href="solucoes.html">Soluções</a>
+      <a href="como-funciona.html">Como funciona</a>
+      <a href="precos.html">Preços</a>
+    </div>
+    <button class="btn-nav">Começar grátis</button>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">IA que transforma negócios</div>
+    <h1>Inteligência artificial<br>para <span>quem trabalha</span><br>com números</h1>
+    <p>Automatize planilhas, controle financeiro e estoque com bots inteligentes. Menos trabalho manual, mais resultado.</p>
+    <div class="hero-btns">
+      <button class="btn-primary">Testar agora</button>
+      <button class="btn-secondary">Ver demonstração</button>
+    </div>
+  </section>
+
+  <div class="demo-area" style="margin: 0 40px 0;">
+    <div class="demo-header">
+      <div class="dot" style="background:#ff5f57"></div>
+      <div class="dot" style="background:#febc2e"></div>
+      <div class="dot" style="background:#28c840"></div>
+      <span class="demo-title">neolab bot — controle financeiro</span>
+    </div>
+    <div class="chat-area" id="chatArea">
+      <div class="msg bot">
+        <div class="avatar bot-av">NL</div>
+        <div class="bubble bot">Olá! Sou o NeoBot. Posso analisar sua planilha de vendas de março. O que você quer saber?</div>
+      </div>
+      <div class="msg user">
+        <div class="avatar user-av">VC</div>
+        <div class="bubble user">Qual produto teve melhor margem esse mês?</div>
+      </div>
+      <div class="msg bot" id="thinkMsg" style="display:none">
+        <div class="avatar bot-av">NL</div>
+        <div class="typing"><span></span><span></span><span></span></div>
+      </div>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="val" id="m1">R$ 0</div><div class="lbl">receita identificada</div></div>
+      <div class="metric"><div class="val" id="m2">0%</div><div class="lbl">margem média</div></div>
+      <div class="metric"><div class="val" id="m3">0h</div><div class="lbl">tempo economizado</div></div>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-label">SOLUÇÕES</div>
+    <h2>IAs prontas para o<br>seu negócio</h2>
+    <p>Ferramentas criadas para PMEs que precisam de eficiência, sem precisar de um time de TI.</p>
+    <div class="cards">
+      <div class="card">
+        <div class="card-icon" style="background:#1a1a2e; border: 0.5px solid #6c63ff33;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9a94ff" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 3v18"/></svg>
+        </div>
+        <h3>Planilha Financeira IA</h3>
+        <p>Análise automática de receitas, despesas e projeções com linguagem natural.</p>
+      </div>
+      <div class="card featured">
+        <div class="card-icon" style="background:#1e1a3a; border: 0.5px solid #6c63ff55;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6c63ff" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+        </div>
+        <h3>Bot de Controle Financeiro</h3>
+        <p>Converse com sua planilha. Pergunte sobre fluxo de caixa, metas e saldo em tempo real.</p>
+        <span class="tag">mais popular</span>
+      </div>
+      <div class="card">
+        <div class="card-icon" style="background:#1a2e1a; border: 0.5px solid #3d6e3d33;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#7dcf7d" stroke-width="1.5"><path d="M20 7H4a2 2 0 00-2 2v6a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></svg>
+        </div>
+        <h3>Gestão de Estoque</h3>
+        <p>Alertas de reposição, análise de giro e previsão de demanda integrados ao seu controle.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="how">
+    <div class="section-label">COMO FUNCIONA</div>
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: start; margin-top: 12px;">
+      <div>
+        <h2 style="font-size:28px; font-weight:500; color:#fff; margin-bottom:10px;">Simples de usar,<br>poderoso nos resultados</h2>
+        <p style="color:#666; font-size:14px; line-height:1.7;">Sem configuração complexa. Em minutos sua planilha vira uma ferramenta inteligente.</p>
+      </div>
+      <div class="steps">
+        <div class="step">
+          <div class="step-num">01</div>
+          <div class="step-content">
+            <h4>Conecte sua planilha</h4>
+            <p>Google Sheets ou Excel. Upload direto, sem instalação.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <div class="step-content">
+            <h4>O bot aprende seus dados</h4>
+            <p>IA lê sua estrutura e identifica padrões automaticamente.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <div class="step-content">
+            <h4>Converse e automatize</h4>
+            <p>Faça perguntas, receba alertas e gere relatórios em segundos.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="pricing">
+    <div class="section-label">PLANOS</div>
+    <h2 style="font-size:28px; font-weight:500; color:#fff; margin-bottom:6px;">Sem surpresas na fatura</h2>
+    <p style="color:#666; font-size:14px;">Comece grátis. Escale quando precisar.</p>
+    <div class="price-grid">
+      <div class="price-card">
+        <div class="price-tag">Grátis</div>
+        <div class="price-name">para começar</div>
+        <div class="price-feat">1 planilha conectada</div>
+        <div class="price-feat">Bot com 50 perguntas/mês</div>
+        <div class="price-feat">Relatório básico</div>
+        <button class="btn-price">Começar grátis</button>
+      </div>
+      <div class="price-card pro">
+        <div style="font-size:11px; color:#a59fff; margin-bottom:8px;">✦ recomendado</div>
+        <div class="price-tag">R$ 97<sub>/mês</sub></div>
+        <div class="price-name">para PMEs</div>
+        <div class="price-feat">5 planilhas conectadas</div>
+        <div class="price-feat">Bot ilimitado</div>
+        <div class="price-feat">Alertas automáticos</div>
+        <div class="price-feat">Relatórios avançados</div>
+        <button class="btn-price active">Assinar agora</button>
+      </div>
+      <div class="price-card">
+        <div class="price-tag">Custom</div>
+        <div class="price-name">para empresas</div>
+        <div class="price-feat">Planilhas ilimitadas</div>
+        <div class="price-feat">IA personalizada</div>
+        <div class="price-feat">Integração via API</div>
+        <div class="price-feat">Suporte dedicado</div>
+        <button class="btn-price">Falar com time</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">NEO<span>LAB</span></div>
+    <p>© 2025 Neolab. IA que transforma.</p>
+    <p>contato@neolab.ai</p>
+  </footer>
+</div>
+
+<script>
+const msgs = [
+  { type: 'bot', text: 'Analisei sua planilha. O produto com melhor margem foi <strong>Plano Pro</strong> com 68% de margem líquida.' },
+  { type: 'user', text: 'E qual mês foi mais lucrativo no trimestre?' },
+  { type: 'bot', text: 'Fevereiro liderou com R$ 34.800 em receita e crescimento de 22% vs janeiro.' }
+];
+let i = 0;
+function addMsg(msg) {
+  const chatArea = document.getElementById('chatArea');
+  const thinkMsg = document.getElementById('thinkMsg');
+  if (msg.type === 'bot') {
+    thinkMsg.style.display = 'flex';
+    setTimeout(() => {
+      thinkMsg.style.display = 'none';
+      const div = document.createElement('div');
+      div.className = 'msg bot';
+      div.innerHTML = `<div class="avatar bot-av">NL</div><div class="bubble bot">${msg.text}</div>`;
+      chatArea.insertBefore(div, thinkMsg);
+    }, 1400);
+  } else {
+    const div = document.createElement('div');
+    div.className = 'msg user';
+    div.innerHTML = `<div class="avatar user-av">VC</div><div class="bubble user">${msg.text}</div>`;
+    chatArea.insertBefore(div, thinkMsg);
+  }
+}
+function animateMetrics() {
+  const targets = [34800, 68, 14];
+  const labels = ['R$ ', '', 'h'];
+  const ids = ['m1', 'm2', 'm3'];
+  ids.forEach((id, idx) => {
+    let cur = 0;
+    const target = targets[idx];
+    const step = target / 40;
+    const el = document.getElementById(id);
+    const t = setInterval(() => {
+      cur = Math.min(cur + step, target);
+      if (idx === 0) el.textContent = 'R$ ' + Math.round(cur).toLocaleString('pt-BR');
+      else if (idx === 1) el.textContent = Math.round(cur) + '%';
+      else el.textContent = Math.round(cur) + 'h';
+      if (cur >= target) clearInterval(t);
+    }, 30);
+  });
+}
+setTimeout(() => { addMsg(msgs[0]); }, 800);
+setTimeout(() => { addMsg(msgs[1]); }, 3200);
+setTimeout(() => { addMsg(msgs[2]); }, 4800);
+setTimeout(animateMetrics, 1200);
+</script>

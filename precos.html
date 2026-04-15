@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Preços — Neolab</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0d0d0f; color: #e8e8e8; }
+
+    /* NAV */
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 0.5px solid #222; }
+    .logo { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 0.5px; text-decoration: none; }
+    .logo span { color: #6c63ff; }
+    .nav-links { display: flex; gap: 24px; }
+    .nav-links a { font-size: 13px; color: #888; text-decoration: none; transition: color .2s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+    .btn-nav { background: #6c63ff; color: #fff; font-size: 13px; padding: 8px 18px; border-radius: 8px; border: none; cursor: pointer; }
+
+    /* HERO */
+    .hero { padding: 72px 40px 56px; text-align: center; border-bottom: 0.5px solid #1a1a1a; }
+    .badge { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff44; color: #a59fff; font-size: 12px; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+    .hero h1 { font-size: 38px; font-weight: 500; color: #fff; line-height: 1.2; margin-bottom: 14px; }
+    .hero h1 span { color: #6c63ff; }
+    .hero p { font-size: 15px; color: #666; max-width: 480px; margin: 0 auto 24px; line-height: 1.7; }
+    .toggle-wrap { display: inline-flex; background: #111116; border: 0.5px solid #1e1e26; border-radius: 10px; padding: 4px; }
+    .toggle-btn { font-size: 12px; padding: 7px 18px; border-radius: 7px; border: none; cursor: pointer; background: transparent; color: #666; transition: all .2s; }
+    .toggle-btn.active { background: #6c63ff; color: #fff; }
+
+    /* PRICING GRID */
+    .pricing { padding: 64px 40px; }
+    .price-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; max-width: 880px; margin: 0 auto; }
+    .price-card { background: #111116; border: 0.5px solid #1e1e26; border-radius: 14px; padding: 28px; display: flex; flex-direction: column; }
+    .price-card.pro { border-color: #6c63ff; background: #0f0e1c; }
+    .plan-badge { font-size: 10px; color: #a59fff; margin-bottom: 10px; display: none; }
+    .price-card.pro .plan-badge { display: block; }
+    .plan-name { font-size: 13px; font-weight: 500; color: #aaa; margin-bottom: 14px; }
+    .price-tag { font-size: 36px; font-weight: 500; color: #fff; line-height: 1; }
+    .price-tag sub { font-size: 14px; color: #555; font-weight: 400; }
+    .price-period { font-size: 12px; color: #444; margin-top: 4px; margin-bottom: 22px; }
+    .divider { height: 0.5px; background: #1e1e1e; margin-bottom: 20px; }
+    .feat-list { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+    .feat { display: flex; align-items: flex-start; gap: 10px; }
+    .feat-dot { width: 16px; height: 16px; border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .feat-dot.ok { background: #1a1a2e; }
+    .feat-dot.no { background: #1e1a1a; }
+    .feat span { font-size: 12px; color: #777; line-height: 1.5; }
+    .feat.active span { color: #bbb; }
+    .btn-price { width: 100%; padding: 11px; border-radius: 9px; border: 0.5px solid #2a2a2a; background: transparent; color: #666; font-size: 13px; cursor: pointer; margin-top: 24px; transition: all .2s; }
+    .btn-price:hover { border-color: #6c63ff44; color: #9a94ff; }
+    .btn-price.active { background: #6c63ff; border-color: #6c63ff; color: #fff; }
+    .btn-price.active:hover { background: #7c74ff; }
+
+    /* COMPARE TABLE */
+    .compare { padding: 0 40px 64px; }
+    .compare-inner { max-width: 880px; margin: 0 auto; }
+    .compare-title { text-align: center; font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 8px; }
+    .compare-h2 { text-align: center; font-size: 24px; font-weight: 500; color: #fff; margin-bottom: 36px; }
+    .table { width: 100%; border-collapse: collapse; }
+    .table thead th { font-size: 12px; color: #555; font-weight: 400; padding: 10px 16px; text-align: center; border-bottom: 0.5px solid #1e1e1e; }
+    .table thead th:first-child { text-align: left; }
+    .table thead th.hl { color: #9a94ff; }
+    .table tbody tr { border-bottom: 0.5px solid #141414; }
+    .table tbody tr:last-child { border-bottom: none; }
+    .table tbody td { font-size: 12px; color: #666; padding: 11px 16px; text-align: center; }
+    .table tbody td:first-child { text-align: left; color: #999; }
+    .table tbody td.hl-col { background: #0f0e1c; }
+    .check { color: #7dcf7d; }
+    .cross { color: #333; }
+    .hl-val { color: #9a94ff; }
+
+    /* TESTIMONIALS */
+    .testi { padding: 0 40px 64px; }
+    .testi-inner { max-width: 880px; margin: 0 auto; }
+    .testi-title { text-align: center; font-size: 11px; color: #6c63ff; letter-spacing: 1px; margin-bottom: 36px; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .testi-card { background: #111116; border: 0.5px solid #1e1e26; border-radius: 12px; padding: 20px; }
+    .testi-text { font-size: 13px; color: #777; line-height: 1.7; margin-bottom: 16px; font-style: italic; }
+    .testi-text::before { content: '"'; color: #6c63ff; font-style: normal; font-size: 18px; line-height: 0; vertical-align: -4px; margin-right: 2px; }
+    .testi-author { display: flex; align-items: center; gap: 10px; }
+    .testi-avatar { width: 30px; height: 30px; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; }
+    .testi-name { font-size: 12px; color: #bbb; }
+    .testi-role { font-size: 11px; color: #444; margin-top: 1px; }
+
+    /* GUARANTEE */
+    .guarantee { margin: 0 40px 64px; background: #111116; border: 0.5px solid #1e1e26; border-radius: 14px; padding: 36px; display: grid; grid-template-columns: auto 1fr; gap: 28px; align-items: center; max-width: 880px; margin-left: auto; margin-right: auto; }
+    .guarantee-icon { width: 52px; height: 52px; border-radius: 12px; background: #1a1a2e; border: 0.5px solid #6c63ff44; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .guarantee h3 { font-size: 16px; font-weight: 500; color: #fff; margin-bottom: 6px; }
+    .guarantee p { font-size: 13px; color: #666; line-height: 1.7; }
+
+    /* CTA */
+    .cta { padding: 64px 40px; text-align: center; border-top: 0.5px solid #1a1a1a; }
+    .cta h2 { font-size: 28px; font-weight: 500; color: #fff; margin-bottom: 12px; }
+    .cta p { font-size: 14px; color: #666; margin-bottom: 28px; }
+    .cta-btns { display: flex; gap: 12px; justify-content: center; }
+    .btn-primary { background: #6c63ff; color: #fff; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; }
+    .btn-secondary { background: transparent; color: #aaa; padding: 12px 28px; border-radius: 10px; border: 0.5px solid #333; cursor: pointer; font-size: 14px; }
+
+    /* FOOTER */
+    .footer { padding: 24px 40px; border-top: 0.5px solid #1a1a1a; display: flex; justify-content: space-between; align-items: center; }
+    .footer p { font-size: 12px; color: #444; }
+    .footer-logo { font-size: 15px; font-weight: 500; color: #444; }
+    .footer-logo span { color: #6c63ff66; }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a class="logo" href="neolab_landing_page.html">NEO<span>LAB</span></a>
+    <div class="nav-links">
+      <a href="solucoes.html">Soluções</a>
+      <a href="como-funciona.html">Como funciona</a>
+      <a href="precos.html" class="active">Preços</a>
+    </div>
+    <button class="btn-nav">Começar grátis</button>
+  </nav>
+
+  <section class="hero">
+    <div class="badge">PREÇOS</div>
+    <h1>Simples, transparente<br><span>sem surpresas</span></h1>
+    <p>Comece grátis e escale quando seu negócio crescer. Cancele quando quiser, sem burocracia.</p>
+    <div class="toggle-wrap">
+      <button class="toggle-btn active" id="btnMensal" onclick="setMensal()">Mensal</button>
+      <button class="toggle-btn" id="btnAnual" onclick="setAnual()">Anual <span style="font-size:10px; color:#7dcf7d;">−20%</span></button>
+    </div>
+  </section>
+
+  <!-- PRICING CARDS -->
+  <section class="pricing">
+    <div class="price-grid">
+
+      <!-- FREE -->
+      <div class="price-card">
+        <div class="plan-badge"></div>
+        <div class="plan-name">Grátis</div>
+        <div class="price-tag">R$ 0</div>
+        <div class="price-period">para sempre</div>
+        <div class="divider"></div>
+        <div class="feat-list">
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>1 planilha conectada</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>50 perguntas ao bot por mês</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Relatório financeiro básico</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Análise do último mês</span>
+          </div>
+          <div class="feat">
+            <div class="feat-dot no"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Alertas automáticos</span>
+          </div>
+          <div class="feat">
+            <div class="feat-dot no"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Relatórios por e-mail</span>
+          </div>
+          <div class="feat">
+            <div class="feat-dot no"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M3 3l6 6M9 3l-6 6" stroke="#333" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Gestão de estoque</span>
+          </div>
+        </div>
+        <button class="btn-price">Criar conta grátis</button>
+      </div>
+
+      <!-- PRO -->
+      <div class="price-card pro">
+        <div class="plan-badge">✦ recomendado para PMEs</div>
+        <div class="plan-name">Pro</div>
+        <div class="price-tag" id="proPriceTag">R$ 97<sub>/mês</sub></div>
+        <div class="price-period" id="proPeriod">cobrado mensalmente</div>
+        <div class="divider"></div>
+        <div class="feat-list">
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>5 planilhas conectadas</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Bot ilimitado</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Alertas automáticos de metas</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Relatórios avançados + e-mail semanal</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Gestão de estoque com alertas</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Histórico completo + projeções</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Suporte por chat em horário comercial</span>
+          </div>
+        </div>
+        <button class="btn-price active">Assinar Pro</button>
+      </div>
+
+      <!-- ENTERPRISE -->
+      <div class="price-card">
+        <div class="plan-badge"></div>
+        <div class="plan-name">Enterprise</div>
+        <div class="price-tag">Custom</div>
+        <div class="price-period">sob consulta</div>
+        <div class="divider"></div>
+        <div class="feat-list">
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Planilhas ilimitadas</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>IA personalizada para o seu negócio</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Integração via API</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>SSO e controle de acesso por equipe</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>SLA com uptime garantido</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Suporte dedicado 24/7</span>
+          </div>
+          <div class="feat active">
+            <div class="feat-dot ok"><svg width="9" height="9" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="#9a94ff" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+            <span>Treinamento e onboarding da equipe</span>
+          </div>
+        </div>
+        <button class="btn-price">Falar com time de vendas</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COMPARE TABLE -->
+  <section class="compare">
+    <div class="compare-inner">
+      <div class="compare-title">COMPARATIVO</div>
+      <h2 class="compare-h2">Tudo que está incluído</h2>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Recurso</th>
+            <th>Grátis</th>
+            <th class="hl">Pro</th>
+            <th>Enterprise</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Planilhas conectadas</td>
+            <td>1</td>
+            <td class="hl-col hl-val">5</td>
+            <td>Ilimitadas</td>
+          </tr>
+          <tr>
+            <td>Perguntas ao bot</td>
+            <td>50/mês</td>
+            <td class="hl-col hl-val">Ilimitado</td>
+            <td>Ilimitado</td>
+          </tr>
+          <tr>
+            <td>Alertas automáticos</td>
+            <td class="cross">—</td>
+            <td class="hl-col check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Relatórios por e-mail</td>
+            <td class="cross">—</td>
+            <td class="hl-col check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Gestão de estoque</td>
+            <td class="cross">—</td>
+            <td class="hl-col check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Projeções financeiras</td>
+            <td class="cross">—</td>
+            <td class="hl-col check">✓</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Integração via API</td>
+            <td class="cross">—</td>
+            <td class="hl-col cross">—</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>IA personalizada</td>
+            <td class="cross">—</td>
+            <td class="hl-col cross">—</td>
+            <td class="check">✓</td>
+          </tr>
+          <tr>
+            <td>Suporte</td>
+            <td>Comunidade</td>
+            <td class="hl-col hl-val">Chat (comercial)</td>
+            <td>Dedicado 24/7</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testi">
+    <div class="testi-inner">
+      <div class="testi-title">O QUE DIZEM OS CLIENTES</div>
+      <div class="testi-grid">
+        <div class="testi-card">
+          <div class="testi-text">Economizo pelo menos 6 horas por semana que gastava consolidando planilhas. Agora só pergunto pro bot.</div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#1a1a2e; border: 0.5px solid #6c63ff44; color:#9a94ff;">CM</div>
+            <div>
+              <div class="testi-name">Carla Menezes</div>
+              <div class="testi-role">Gestora financeira · PME</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-text">Antes eu ficava sem saber o estoque real. Agora recebo alerta quando qualquer produto está acabando.</div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#1a2e1a; border: 0.5px solid #3d6e3d44; color:#7dcf7d;">RP</div>
+            <div>
+              <div class="testi-name">Ricardo Pires</div>
+              <div class="testi-role">Dono de e-commerce</div>
+            </div>
+          </div>
+        </div>
+        <div class="testi-card">
+          <div class="testi-text">Testei no plano grátis, gostei tanto que assine o Pro no mesmo dia. ROI imediato.</div>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:#2e1a1a; border: 0.5px solid #6e3d3d44; color:#cf7d7d;">AL</div>
+            <div>
+              <div class="testi-name">Ana Lima</div>
+              <div class="testi-role">Fundadora · Serviços</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- GUARANTEE -->
+  <div class="guarantee">
+    <div class="guarantee-icon">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a94ff" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+    </div>
+    <div>
+      <h3>Garantia de 14 dias</h3>
+      <p>Se você não gostar por qualquer motivo nos primeiros 14 dias, devolvemos 100% do valor sem perguntas. Confiamos na Neolab — e queremos que você também confie.</p>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Comece hoje, grátis</h2>
+    <p>Não precisa de cartão de crédito. Conecte sua planilha em minutos.</p>
+    <div class="cta-btns">
+      <button class="btn-primary">Criar conta grátis</button>
+      <button class="btn-secondary">Falar com time</button>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-logo">NEO<span>LAB</span></div>
+    <p>© 2025 Neolab. IA que transforma.</p>
+    <p>contato@neolab.ai</p>
+  </footer>
+
+  <script>
+    function setMensal() {
+      document.getElementById('btnMensal').classList.add('active');
+      document.getElementById('btnAnual').classList.remove('active');
+      document.getElementById('proPriceTag').innerHTML = 'R$ 97<sub>/mês</sub>';
+      document.getElementById('proPeriod').textContent = 'cobrado mensalmente';
+    }
+    function setAnual() {
+      document.getElementById('btnAnual').classList.add('active');
+      document.getElementById('btnMensal').classList.remove('active');
+      document.getElementById('proPriceTag').innerHTML = 'R$ 78<sub>/mês</sub>';
+      document.getElementById('proPeriod').textContent = 'cobrado anualmente (R$ 931/ano)';
+    }
+  </script>
+
+</body>
+</html>
