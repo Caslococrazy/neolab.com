@@ -6,8 +6,9 @@
   <title>Neolab — IA para quem trabalha com números</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: transparent; }
-  .lp { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #e8e8e8; background: #0d0d0f; border-radius: 16px; overflow: hidden; }
+  html, body { overflow-x: hidden; max-width: 100%; }
+  body { background: #0d0d0f; }
+  .lp { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; color: #e8e8e8; background: #0d0d0f; width: 100%; overflow-x: hidden; }
   .nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 40px; border-bottom: 0.5px solid #222; }
   .logo { font-size: 18px; font-weight: 500; color: #fff; letter-spacing: 0.5px; }
   .logo span { color: #6c63ff; }
@@ -23,7 +24,7 @@
   .hero-btns { display: flex; gap: 12px; justify-content: center; }
   .btn-primary { background: #6c63ff; color: #fff; padding: 12px 28px; border-radius: 10px; border: none; cursor: pointer; font-size: 14px; }
   .btn-secondary { background: transparent; color: #aaa; padding: 12px 28px; border-radius: 10px; border: 0.5px solid #333; cursor: pointer; font-size: 14px; }
-  .demo-area { margin: 48px 40px 0; background: #111116; border: 0.5px solid #222; border-radius: 14px; overflow: hidden; }
+  .demo-area { margin: 48px 40px 0; background: #111116; border: 0.5px solid #222; border-radius: 14px; overflow: hidden; max-width: 100%; }
   .demo-header { display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-bottom: 0.5px solid #1e1e1e; background: #0f0f13; }
   .dot { width: 10px; height: 10px; border-radius: 50%; }
   .demo-title { font-size: 12px; color: #555; margin-left: 6px; }
@@ -87,14 +88,14 @@
     .hero { padding: 48px 20px 36px; }
     .hero h1 { font-size: 28px; }
     .hero p { font-size: 14px; }
-    .hero-btns { flex-direction: column; align-items: stretch; padding: 0 20px; }
-    .demo-area { margin: 0 20px 0 !important; }
+    .hero-btns { flex-direction: column; align-items: stretch; }
+    .demo-area { margin: 32px 20px 0; }
     .metrics { grid-template-columns: 1fr; }
     .section { padding: 40px 20px; }
     .section h2 { font-size: 22px; }
     .cards { grid-template-columns: 1fr; }
     .how { padding: 0 20px 40px; }
-    .how > div[style] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
+    .how > div { display: flex !important; flex-direction: column !important; gap: 24px !important; }
     .pricing { padding: 0 20px 40px; }
     .price-grid { grid-template-columns: 1fr; }
     .footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
@@ -124,7 +125,7 @@
     </div>
   </section>
 
-  <div class="demo-area" style="margin: 0 40px 0;">
+  <div class="demo-area">
     <div class="demo-header">
       <div class="dot" style="background:#ff5f57"></div>
       <div class="dot" style="background:#febc2e"></div>
