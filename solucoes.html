@@ -78,6 +78,27 @@
     .footer p { font-size: 12px; color: #444; }
     .footer-logo { font-size: 15px; font-weight: 500; color: #444; }
     .footer-logo span { color: #6c63ff66; }
+
+    @media (max-width: 640px) {
+      .nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+      .hero { padding: 48px 20px 36px; }
+      .hero h1 { font-size: 26px; }
+      .solutions { padding: 32px 20px; }
+      .sol-block { grid-template-columns: 1fr; gap: 28px; padding: 36px 0; }
+      .sol-block.reverse { direction: ltr; }
+      .sol-text h2 { font-size: 20px; }
+      .benefits { padding: 36px 20px; }
+      .benefits-grid { grid-template-columns: 1fr 1fr; }
+      .cta { padding: 48px 20px; }
+      .cta h2 { font-size: 22px; }
+      .cta-btns { flex-direction: column; align-items: stretch; }
+      .footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+    }
+
+    @media (max-width: 400px) {
+      .benefits-grid { grid-template-columns: 1fr; }
+    }
   </style>
 </head>
 <body>

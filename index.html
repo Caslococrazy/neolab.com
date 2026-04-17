@@ -1,4 +1,9 @@
-
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Neolab — IA para quem trabalha com números</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { background: transparent; }
@@ -75,8 +80,29 @@
   .footer-logo span { color: #6c63ff66; }
 
   .tag { display: inline-block; background: #1a1a2e; border: 0.5px solid #6c63ff33; color: #7a74cc; font-size: 11px; padding: 3px 10px; border-radius: 20px; margin-right: 6px; }
+
+  @media (max-width: 640px) {
+    .nav { padding: 16px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 48px 20px 36px; }
+    .hero h1 { font-size: 28px; }
+    .hero p { font-size: 14px; }
+    .hero-btns { flex-direction: column; align-items: stretch; padding: 0 20px; }
+    .demo-area { margin: 0 20px 0 !important; }
+    .metrics { grid-template-columns: 1fr; }
+    .section { padding: 40px 20px; }
+    .section h2 { font-size: 22px; }
+    .cards { grid-template-columns: 1fr; }
+    .how { padding: 0 20px 40px; }
+    .how > div[style] { display: flex !important; flex-direction: column !important; gap: 24px !important; }
+    .pricing { padding: 0 20px 40px; }
+    .price-grid { grid-template-columns: 1fr; }
+    .footer { padding: 20px; flex-direction: column; gap: 6px; text-align: center; }
+  }
 </style>
 
+</head>
+<body>
 <div class="lp">
   <nav class="nav">
     <div class="logo">NEO<span>LAB</span></div>
@@ -280,3 +306,5 @@ setTimeout(() => { addMsg(msgs[1]); }, 3200);
 setTimeout(() => { addMsg(msgs[2]); }, 4800);
 setTimeout(animateMetrics, 1200);
 </script>
+</body>
+</html>
